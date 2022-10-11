@@ -89,17 +89,26 @@ def getCandidateInfo(name):
                     json.dump(sectors, f, indent=2)
 
         candidateID = legislatorData[1]
-
         getOrganizations(candidateID)
-        #topsupporters = getOrganizations(candidateID)
-        #print(topsupporters)
         getSectors(candidateID)
-        #topsectors = getSectors(candidateID)
-        #print(topsectors)
-        topsupporters = ""
-        topsectors = ""
+        topsupporters = {}
+        topsectors = {}
 
-        return flask.jsonify(legislatorData[0], legislatorData[1], legislatorData[2], topsupporters, topsectors)
+        def accessFiles(candidateID):
+            with open('Candidates/Organizations/' + candidateID + '.json', 'r') as f:
+                organizations = json.load(f)
+                for organization in organizations:
+                    topsupporters[organization] = organizations[organization]
+            with open('Candidates/Sectors/' + candidateID + '.json', 'r') as f:
+                sectors = json.load(f)
+                for sector in sectors:
+                    topsectors[sector] = sectors[sector]
+            return topsupporters, topsectors
+
+        topinfo = accessFiles(candidateID)
+
+        return flask.jsonify(legislatorData[0], legislatorData[1], legislatorData[2], topinfo[0], topinfo[1])
+    
     except Exception as e:
         return str(e)
 
