@@ -58,10 +58,7 @@ def getCandidateInfo(name):
             try:
                 with open('Candidates/Organizations/' + cid + '.json', 'r') as f:
                     data = json.load(f)
-                    orgs = {}
-                    for i in orgs:
-                        orgs[i['org_name']] = i['total']
-                    return orgs
+                    return data
             except:
                 url = 'https://www.opensecrets.org/api/?method=candContrib&cid=' + cid + '&cycle=2022&apikey=c5d1d02a93919b2845a095e52c2af67a&output=json'
                 response = requests.get(url)
@@ -80,10 +77,7 @@ def getCandidateInfo(name):
             try:
                 with open('Candidates/Sectors/' + cid + '.json', 'r') as f:
                     data = json.load(f)
-                    sectors = {}
-                    for i in data:
-                        sectors[i['@attributes']['sector_name']] = i['@attributes']['total']
-                    return sectors
+                    return data
             except:
                 url = 'https://www.opensecrets.org/api/?method=candSector&cid=' + cid + '&cycle=2022&apikey=c5d1d02a93919b2845a095e52c2af67a&output=json'
                 response = requests.get(url)
