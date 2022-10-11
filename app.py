@@ -58,7 +58,10 @@ def getCandidateInfo(name):
             try:
                 with open('Candidates/Organizations/' + cid + '.json', 'r') as f:
                     data = json.load(f)
-                    return data
+                    orgs = {}
+                    for i in orgs:
+                        orgs[i['org_name']] = i['total']
+                    return orgs
             except:
                 url = 'https://www.opensecrets.org/api/?method=candContrib&cid=' + cid + '&cycle=2022&apikey=c5d1d02a93919b2845a095e52c2af67a&output=json'
                 response = requests.get(url)
@@ -77,7 +80,10 @@ def getCandidateInfo(name):
             try:
                 with open('Candidates/Sectors/' + cid + '.json', 'r') as f:
                     data = json.load(f)
-                    return data
+                    sectors = {}
+                    for i in data:
+                        sectors[i['@attributes']['sector_name']] = i['@attributes']['total']
+                    return sectors
             except:
                 url = 'https://www.opensecrets.org/api/?method=candSector&cid=' + cid + '&cycle=2022&apikey=c5d1d02a93919b2845a095e52c2af67a&output=json'
                 response = requests.get(url)
@@ -101,10 +107,8 @@ def getCandidateInfo(name):
         print(topsectors)
 
         return flask.jsonify(legislatorData[0], legislatorData[1], legislatorData[2], topsupporters, topsectors)
-
     except Exception as e:
-        print(e)
-        return e
+        return str(e)
 
 if __name__ == '__main__':
     app.run()
