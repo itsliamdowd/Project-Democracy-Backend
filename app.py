@@ -104,6 +104,7 @@ def getCandidateInfo(name):
 
     except Exception as e:
         print(e)
+        return e
 
 if __name__ == '__main__':
     app.run()
