@@ -101,8 +101,9 @@ def getCandidateInfo(name):
         print(topsectors)
 
         return flask.jsonify(legislatorData[0], legislatorData[1], legislatorData[2], topsupporters, topsectors)
-    except:
-        return "Error"
+
+    except Exception as e:
+        print(e)
 
 if __name__ == '__main__':
     app.run()
