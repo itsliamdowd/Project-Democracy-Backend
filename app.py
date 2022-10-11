@@ -57,8 +57,7 @@ def getCandidateInfo(name):
         def getOrganizations(cid):
             try:
                 with open('Candidates/Organizations/' + cid + '.json', 'r') as f:
-                    data = json.load(f)
-                    return data
+                    pass
             except:
                 url = 'https://www.opensecrets.org/api/?method=candContrib&cid=' + cid + '&cycle=2022&apikey=c5d1d02a93919b2845a095e52c2af67a&output=json'
                 response = requests.get(url)
@@ -71,13 +70,11 @@ def getCandidateInfo(name):
                     orgs[org] = total
                 with open('Candidates/Organizations/' + cid + '.json', 'w') as f:
                    json.dump(orgs, f, indent=2)
-                return orgs
 
         def getSectors(cid):
             try:
                 with open('Candidates/Sectors/' + cid + '.json', 'r') as f:
-                    data = json.load(f)
-                    return data
+                    pass
             except:
                 url = 'https://www.opensecrets.org/api/?method=candSector&cid=' + cid + '&cycle=2022&apikey=c5d1d02a93919b2845a095e52c2af67a&output=json'
                 response = requests.get(url)
@@ -90,15 +87,17 @@ def getCandidateInfo(name):
                     sectors[sector] = total
                 with open('Candidates/Sectors/' + cid + '.json', 'w') as f:
                     json.dump(sectors, f, indent=2)
-                return sectors
 
         candidateID = legislatorData[1]
 
-        topsupporters = getOrganizations(candidateID)
-        print(topsupporters)
-
-        topsectors = getSectors(candidateID)
-        print(topsectors)
+        getOrganizations(candidateID)
+        #topsupporters = getOrganizations(candidateID)
+        #print(topsupporters)
+        getSectors(candidateID)
+        #topsectors = getSectors(candidateID)
+        #print(topsectors)
+        topsupporters = ""
+        topsectors = ""
 
         return flask.jsonify(legislatorData[0], legislatorData[1], legislatorData[2], topsupporters, topsectors)
     except Exception as e:
