@@ -89,8 +89,12 @@ def getCandidateInfo(name):
                     json.dump(sectors, f, indent=2)
 
         candidateID = legislatorData[1]
-        getOrganizations(candidateID)
-        getSectors(candidateID)
+        if candidateID != "None":
+            getOrganizations(candidateID)
+            getSectors(candidateID)
+        else:
+            pass
+
         topsupporters = {}
         topsectors = {}
 
@@ -105,7 +109,10 @@ def getCandidateInfo(name):
                     topsectors[sector] = sectors[sector]
             return topsupporters, topsectors
 
-        topinfo = accessFiles(candidateID)
+        if candidateID != "None":
+            topinfo = accessFiles(candidateID)
+        else:
+            pass
 
         return flask.jsonify(legislatorData[0], legislatorData[1], legislatorData[2], topinfo[0], topinfo[1])
     
