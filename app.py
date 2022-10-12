@@ -68,7 +68,12 @@ def getCandidateInfo(name, level):
                     for i in jsonData['response']['contributors']['contributor']:
                         org = i['@attributes']['org_name']
                         total = i['@attributes']['total']
-                        orgs[org] = total
+                        if int(total) > 0:
+                            orgs[org] = total
+                        elif int(total) =< 0:
+                            pass
+                        else:
+                            pass
                     with open('Candidates/Organizations/' + cid + '.json', 'w') as f:
                        json.dump(orgs, f, indent=2)
 
@@ -85,7 +90,12 @@ def getCandidateInfo(name, level):
                     for i in jsonData['response']['sectors']['sector']:
                         sector = i['@attributes']['sector_name']
                         total = i['@attributes']['total']
-                        sectors[sector] = total
+                        if int(total) > 0:
+                            sectors[sector] = total
+                        elif int(total) =< 0:
+                            pass
+                        else:
+                            pass
                     with open('Candidates/Sectors/' + cid + '.json', 'w') as f:
                         json.dump(sectors, f, indent=2)
 
