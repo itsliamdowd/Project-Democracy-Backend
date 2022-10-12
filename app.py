@@ -43,7 +43,7 @@ def getCandidateInfo(name):
                         except:
                             phonenumber = "None"
                         try:
-                            address = i['terms'][0]['address']
+                            address = i['terms'][0]['office']
                         except:
                             address = "None"
                         return phonenumber, opensecrets, address
