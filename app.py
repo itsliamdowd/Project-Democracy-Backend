@@ -12,8 +12,7 @@ def index():
 
 @app.route('/api/getInfo/<name>/<level>/')
 def getCandidateInfo(name, level):
-    #try:
-    for i in range(1):
+    try:
         if level == "federal":
             today = datetime.date.today()
             filename = 'CandidateData/' + today.strftime('%Y-%m-%d') + '.json'
@@ -145,8 +144,8 @@ def getCandidateInfo(name, level):
         else:
             return "Invalid level"
             
-    #except Exception as e:
-    #    return str(e)
+    except Exception as e:
+        return str(e)
 
 if __name__ == '__main__':
     app.run()
