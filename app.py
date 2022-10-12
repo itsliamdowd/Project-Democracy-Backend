@@ -12,7 +12,8 @@ def index():
 
 @app.route('/api/getInfo/<name>/<level>/')
 def getCandidateInfo(name, level):
-    try:
+    #try:
+    for i in range(1):
         if level == "federal":
             today = datetime.date.today()
             filename = 'CandidateData/' + today.strftime('%Y-%m-%d') + '.json'
@@ -22,7 +23,7 @@ def getCandidateInfo(name, level):
                     with open(filename, 'r') as f:
                         pass
                 except:
-                    url = 'https://raw.githubusercontent.com/unitedstates/congress-legislators/main/    legislators-current.yaml'
+                    url = 'https://raw.githubusercontent.com/unitedstates/congress-legislators/main/legislators-current.yaml'
                     response = requests.get(url)
                     data = yaml.safe_load(response.text)
                     with open(filename, 'w') as f:
@@ -144,8 +145,8 @@ def getCandidateInfo(name, level):
         else:
             return "Invalid level"
             
-    except Exception as e:
-        return str(e)
+    #except Exception as e:
+    #    return str(e)
 
 if __name__ == '__main__':
     app.run()
