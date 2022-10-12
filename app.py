@@ -70,7 +70,7 @@ def getCandidateInfo(name, level):
                         total = i['@attributes']['total']
                         if int(total) > 0:
                             orgs[org] = total
-                        elif int(total) =< 0:
+                        elif int(total) <= 0:
                             pass
                         else:
                             pass
@@ -92,7 +92,7 @@ def getCandidateInfo(name, level):
                         total = i['@attributes']['total']
                         if int(total) > 0:
                             sectors[sector] = total
-                        elif int(total) =< 0:
+                        elif int(total) <= 0:
                             pass
                         else:
                             pass
