@@ -126,30 +126,56 @@ def getCandidateInfo(name, level):
                 pass
 
             return flask.jsonify(legislatorData[0], legislatorData[1], legislatorData[2], topinfo[0], topinfo[1])
-        elif level == "state":
-            def searchName(name):
-                url = "https://api.github.com/search/code?q=filename:{}+repo:openstates/people".format(name)
-                response = requests.get(url)
-                response = response.json()
-                filepath = response["items"][0]["path"]
-                return filepath
 
-            def getContentsOfFile(filepath):
-                url = "https://raw.githubusercontent.com/openstates/people/master/{}".format(filepath)
-                response = requests.get(url)
-                response = response.text
-                jsonData = yaml.safe_load(response)
-                jsonData = json.dumps(jsonData, indent=2, sort_keys=True, default=str)
-                return jsonData
+        elif level == "state":
+            def checkIfFileExists(name):
+                try:
+                    nameForSearch = name.replace(" ", "_")
+                    with open('StateCandidateData/' + nameForSearch + '.json', 'r') as f:
+                        data = json.load(f)
+                        return data
+                except:
+                    def searchName(name):
+                        url = "https://api.github.com/search/code?q=filename:{}+repo:openstates/people".format(name)
+                        response = requests.get(url)
+                        response = response.json()
+                        filepath = response["items"][0]["path"]
+                        return filepath
+
+                    def getContentsOfFile(filepath):
+                       url = "https://raw.githubusercontent.com/openstates/people/master/{}".format(filepath)
+                       response = requests.get(url)
+                       response = response.text
+                       jsonData = yaml.safe_load(response)
+                       jsonData = json.dumps(jsonData, indent=2, sort_keys=True, default=str)
+                       return jsonData
+
+                    link = searchName(name)
+                    data = getContentsOfFile(link)
+                    nameForSearch = name.replace(" ", "_")
+                    with open('StateCandidateData/' + nameForSearch + '.json', 'w') as f:
+                        json.dump(data, f, indent=2)
+                    return data
 
             def getDataFromFile(data):
                 data = json.loads(data)
-                voice = data["offices"][0]["voice"]
-                address = data["offices"][0]["address"]
+                try:
+                    voice = data["offices"][0]["voice"]
+                except:
+                    voice = "None"
+                try:
+                    address = data["offices"][0]["address"]
+                except:
+                    address = "None"
+                if ';' in address:
+                    address = address.split(";")
+                    address = address[-2:]
+                    address = "".join(address)
+                else:
+                    pass   
                 return voice, address
 
-            link = searchName(name)
-            data = getContentsOfFile(link)
+            data = checkIfFileExists(name)
             return flask.jsonify(getDataFromFile(data))
         else:
             return "Invalid level"
