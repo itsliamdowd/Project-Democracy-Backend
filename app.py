@@ -167,16 +167,22 @@ def getCandidateInfo(name, level):
                     address = data["offices"][0]["address"]
                 except:
                     address = "None"
+                try:
+                    id = data["id"]
+                except:
+                    id = "None"
                 if ';' in address:
                     address = address.split(";")
                     address = address[-2:]
                     address = "".join(address)
                 else:
                     pass   
-                return voice, address
+                return voice, address, id
 
             data = checkIfFileExists(name)
-            return flask.jsonify(getDataFromFile(data))
+            initialData = getDataFromFile(data)
+            return flask.jsonify(initialData)
+
         else:
             return "Invalid level"
             
