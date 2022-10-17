@@ -159,7 +159,6 @@ def getCandidateInfo(name, level):
                     return data
 
             def getDataFromFile(data):
-                data = json.loads(data)
                 try:
                     voice = data["offices"][0]["voice"]
                 except:
@@ -182,6 +181,7 @@ def getCandidateInfo(name, level):
 
             data = checkIfFileExists(name)
             initialData = getDataFromFile(data)
+            print(initialData)
             return flask.jsonify(initialData)
 
         else:
