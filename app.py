@@ -34,7 +34,7 @@ def getCandidateInfo(name, level):
                 with open(filename, 'r') as f:
                     data = json.load(f)
                     for i in data:
-                        if i['name']['official_full'] == name:
+                        if i['name']['official_full'].replace(' ', '').lower() == name.lower():
                             try:
                                 phonenumber =  i['terms'][0]['phone']
                             except:
@@ -154,7 +154,8 @@ def getCandidateInfo(name, level):
                     data = getContentsOfFile(link)
                     nameForSearch = name.replace(" ", "_")
                     with open('StateCandidateData/' + nameForSearch + '.json', 'w') as f:
-                        json.dump(data, f, indent=2)
+                        f.write(data)
+                        
                     return data
 
             def getDataFromFile(data):
