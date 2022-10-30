@@ -189,5 +189,70 @@ def getCandidateInfo(name, level):
     except Exception as e:
         return str(e)
 
+@app.route('/api/getMisconduct/<name>/')
+def getRepresenativeMisconduct(name):
+    try:
+        today = datetime.date.today()
+        filename = 'CandidateData/' + today.strftime('%Y-%m-%d') + '.json'
+        todayFile = 'Candidates/Misconduct/' + today.strftime('%Y-%m-%d') + '.json'
+
+        def accessJSONFile():
+            try:
+                with open(filename, 'r') as f:
+                    pass
+            except:
+                url = 'https://raw.githubusercontent.com/unitedstates/congress-legislators/main/legislators-current.yaml'
+                response = requests.get(url)
+                data = yaml.safe_load(response.text)
+                with open(filename, 'w') as f:
+                    json.dump(data, f, indent=2)
+        accessJSONFile()
+        
+        def searchCandidateName(name):
+            with open(filename, 'r') as f:
+                data = json.load(f)
+                for i in data:
+                    if i['name']['official_full'] == name:
+                        return i['id']['govtrack']
+                    else:
+                        pass
+
+        candidateID = searchCandidateName(name)
+        print(candidateID)
+
+        def get_misconduct():
+            misconduct_yaml = requests.get("https://raw.githubusercontent.com/govtrack/misconduct/master/misconduct.yaml")
+            misconduct_yaml = misconduct_yaml.text
+            misconduct = yaml.load(misconduct_yaml, Loader=yaml.FullLoader)
+            with open(todayFile, "w+") as json_file:
+                json.dump(misconduct, json_file, indent=4, sort_keys=True, default=str)
+            return misconduct
+
+        def parse_misconduct():
+            try:
+                with open(todayFile, "r") as json_file:
+                    misconduct = json.load(json_file)
+            except:
+                misconduct = get_misconduct()
+
+            with open(todayFile, "r") as json_file:
+                misconduct = json.load(json_file)
+
+            incidents = []
+            for i in range(len(misconduct)):
+                if str(misconduct[i]["person"]) == str(candidateID):
+                    text = misconduct[i]["text"]
+                    allegation = misconduct[i]["allegation"]
+                    tags = misconduct[i]["tags"]
+                    incidents.append([allegation, text, tags])
+            return incidents
+
+        get_misconduct()
+        misconduct = parse_misconduct()
+        return flask.jsonify(misconduct)
+
+    except:
+        return 'Error'
+
 if __name__ == '__main__':
     app.run()
