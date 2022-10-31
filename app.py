@@ -268,7 +268,12 @@ def getRepresentatives(lat, lon):
             phone = rep['contact']['phone']
             url = rep['contact']['url']
             address = rep['contact']['address']
-            dictionaryofreps[fullname] = {'type': type, 'phone': phone, 'url': url, 'address': address}
+            party = rep['bio']['party']
+            if str(party) == "Republican":
+                party = "Republican Party"
+            elif str(party) == "Democrat":
+                party = "Democratic Party"
+            dictionaryofreps[fullname] = {'type': type, 'phone': phone, 'url': url, 'address': address, 'party': party}
 
         print(dictionaryofreps)
         return flask.jsonify(dictionaryofreps)
