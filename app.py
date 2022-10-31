@@ -3,6 +3,7 @@ import yaml
 import json
 import datetime
 import flask
+from geocodio import GeocodioClient
 
 app = flask.Flask(__name__)
 
@@ -251,6 +252,26 @@ def getRepresenativeMisconduct(name):
         misconduct = parse_misconduct()
         return flask.jsonify(misconduct)
 
+    except:
+        return 'Error'
+
+@app.route('/api/getRepresentatives/<lat>/<lon>/')
+def getRepresentatives(lat, lon):
+    try:
+        client = GeocodioClient("f9956323926f2353565a3bf62366fff95353223")
+        geocoded_location = client.reverse((lat, lon), fields=["cd"])
+        reps = geocoded_location['results'][0]['fields']['congressional_districts'][0]['current_legislators']
+        dictionaryofreps = {}
+        for rep in reps:
+            fullname = rep['bio']['first_name'] + ' ' + rep['bio']['last_name']
+            type = rep['type'].title()
+            phone = rep['contact']['phone']
+            url = rep['contact']['url']
+            address = rep['contact']['address']
+            dictionaryofreps[fullname] = {'type': type, 'phone': phone, 'url': url, 'address': address}
+
+        print(dictionaryofreps)
+        return flask.jsonify(dictionaryofreps)
     except:
         return 'Error'
 
