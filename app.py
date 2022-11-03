@@ -278,7 +278,15 @@ def getRepresentatives(lat, lon):
                 pass
             else:
                 image = "https://theunitedstates.io/images/congress/225x275/{}.jpg".format(rep['references']['bioguide_id'])
-            dictionaryofreps[fullname] = {'type': type, 'phone': phone, 'url': url, 'address': address, 'party': party, 'image': image}
+            if rep['social']['twitter'] != None:
+                twitter = rep['social']['twitter']
+            else:
+                twitter = None
+            if rep['social']['facebook'] != None:
+                facebook = rep['social']['facebook']
+            else:
+                facebook = None
+            dictionaryofreps[fullname] = {'type': type, 'phone': phone, 'url': url, 'address': address, 'party': party, 'image': image, 'twitter': twitter, 'facebook': facebook}
 
         print(dictionaryofreps)
         return flask.jsonify(dictionaryofreps)
