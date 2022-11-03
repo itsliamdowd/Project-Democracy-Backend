@@ -273,7 +273,12 @@ def getRepresentatives(lat, lon):
                 party = "Republican Party"
             elif str(party) == "Democrat":
                 party = "Democratic Party"
-            dictionaryofreps[fullname] = {'type': type, 'phone': phone, 'url': url, 'address': address, 'party': party}
+            image = ""
+            if rep['references']['bioguide_id'] == None:
+                pass
+            else:
+                image = "https://theunitedstates.io/images/congress/225x275/{}.jpg".format(rep['references']['bioguide_id'])
+            dictionaryofreps[fullname] = {'type': type, 'phone': phone, 'url': url, 'address': address, 'party': party, 'image': image}
 
         print(dictionaryofreps)
         return flask.jsonify(dictionaryofreps)
