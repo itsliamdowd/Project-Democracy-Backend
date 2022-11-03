@@ -278,14 +278,16 @@ def getRepresentatives(lat, lon):
                 pass
             else:
                 image = "https://theunitedstates.io/images/congress/225x275/{}.jpg".format(rep['references']['bioguide_id'])
+            twitter = ""
             if rep['social']['twitter'] != None:
                 twitter = rep['social']['twitter']
             else:
-                twitter = None
+                pass
+            facebook = ""
             if rep['social']['facebook'] != None:
                 facebook = rep['social']['facebook']
             else:
-                facebook = None
+                pass
             dictionaryofreps[fullname] = {'type': type, 'phone': phone, 'url': url, 'address': address, 'party': party, 'image': image, 'twitter': twitter, 'facebook': facebook}
 
         print(dictionaryofreps)
