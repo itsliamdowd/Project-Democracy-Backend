@@ -288,7 +288,12 @@ def getRepresentatives(lat, lon):
                 facebook = rep['social']['facebook']
             else:
                 pass
-            dictionaryofreps[fullname] = {'type': type, 'phone': phone, 'url': url, 'address': address, 'party': party, 'image': image, 'twitter': twitter, 'facebook': facebook}
+            youtube = ""
+            if rep['social']['youtube'] != None:
+                youtube = rep['social']['youtube']
+            else:
+                pass
+            dictionaryofreps[fullname] = {'type': type, 'phone': phone, 'url': url, 'address': address, 'party': party, 'image': image, 'twitter': twitter, 'facebook': facebook, 'youtube': youtube}
 
         print(dictionaryofreps)
         return flask.jsonify(dictionaryofreps)
